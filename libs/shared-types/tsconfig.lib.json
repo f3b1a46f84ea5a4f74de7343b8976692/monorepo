@@ -3,10 +3,7 @@
     "compilerOptions": {
         "outDir": "../../dist/out-tsc",
         "declaration": true,
-        "types": ["node"],
-        "paths": {
-            "@book-swap/common": ["libs/common/src/index.ts"],
-        }
+        "types": ["node"]
     },
-    "include": ["src/**/*.ts"],
+    "include": ["src/**/*.ts"]
 }

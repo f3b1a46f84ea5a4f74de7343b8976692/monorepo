@@ -7,6 +7,7 @@
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
         "importHelpers": true,
         "target": "es2015",
         "module": "esnext",
@@ -15,6 +16,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@aqua/db": ["libs/db/src/index.ts"],
             "@aqua/shared-types": ["libs/shared-types/src/index.ts"]
         }
     },
