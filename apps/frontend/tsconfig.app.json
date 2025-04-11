@@ -7,7 +7,33 @@
             "@nx/react/typings/cssmodule.d.ts",
             "@nx/react/typings/image.d.ts",
             "vite/client"
-        ]
+        ],
+        "paths": {
+            // FSD
+            "@local/app": ["apps/frontend/src/app"],
+            "@local/app/*": ["apps/frontend/src/app/*"],
+
+            "@local/processes": ["apps/frontend/src/processes"],
+            "@local/processes/*": ["apps/frontend/src/processes/*"],
+
+            "@local/pages": ["apps/frontend/src/pages"],
+            "@local/pages/*": ["apps/frontend/src/pages/*"],
+
+            "@local/widgets": ["apps/frontend/src/widgets"],
+            "@local/widgets/*": ["apps/frontend/src/widgets/*"],
+
+            "@local/features": ["apps/frontend/src/features"],
+            "@local/features/*": ["apps/frontend/src/features/*"],
+
+            "@local/entities": ["apps/frontend/src/entities"],
+            "@local/entities/*": ["apps/frontend/src/entities/*"],
+
+            "@local/shared": ["apps/frontend/src/shared"],
+            "@local/shared/*": ["apps/frontend/src/shared/*"],
+
+            "@local/assets": ["apps/frontend/src/shared/assets"],
+            "@local/assets/*": ["apps/frontend/src/shared/assets/*"]
+        }
     },
     "exclude": [
         "src/**/*.spec.ts",

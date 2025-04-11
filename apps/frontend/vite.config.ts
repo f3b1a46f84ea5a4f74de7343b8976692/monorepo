@@ -28,4 +28,22 @@ export default defineConfig({
             transformMixedEsModules: true,
         },
     },
+    resolve: {
+        alias: {
+            '@local/app': '/src/app',
+            '@local/app/*': '/src/app/*',
+            '@local/pages': '/src/pages',
+            '@local/pages/*': '/src/pages/*',
+            '@local/widgets': '/src/widgets',
+            '@local/widgets/*': '/src/widgets/*',
+            '@local/features': '/src/features',
+            '@local/features/*': '/src/features/*',
+            '@local/entities': '/src/entities',
+            '@local/entities/*': '/src/entities/*',
+            '@local/shared': '/src/shared',
+            '@local/shared/*': '/src/shared/*',
+            '@local/assets': '/src/shared/assets',
+            '@local/assets/*': '/src/shared/assets/*',
+        },
+    },
 });
