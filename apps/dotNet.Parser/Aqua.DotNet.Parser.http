@@ -1,0 +1,6 @@
+@Aqua.DotNet.Parser_HostAddress = http://localhost:5087
+
+GET {{Aqua.DotNet.Parser_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

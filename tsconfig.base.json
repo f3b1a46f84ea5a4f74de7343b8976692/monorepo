@@ -17,6 +17,9 @@
         "baseUrl": ".",
         "paths": {
             "@aqua/db": ["libs/db/src/index.ts"],
+            "@aqua/generated-apps/dot-net.parser-types": [
+                "libs/generated/apps/dot-net.parser-types/src/index.ts"
+            ],
             "@aqua/shared-types": ["libs/shared-types/src/index.ts"]
         }
     },
