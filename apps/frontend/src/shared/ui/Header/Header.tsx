@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AvatarSvg from '@local/shared/images/Avatar.svg';
-import AnimatedText from './AnimatedText';
+import AnimatedText from '@local/pages/MarketPage/components/AnimatedText';
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
     return (
         <motion.header
             initial={{ opacity: 0, y: -20 }}
@@ -12,10 +12,10 @@ const Header: React.FC = () => {
                 y: 0,
             }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex justify-between items-center mb-6 sm:mb-8 relative z-10 mt-[20px] px-4"
+            className="flex justify-between fixed top-0 left-0 right-0 items-center mb-6 sm:mb-8 z-10 py-6 px-4"
         >
             <div>
-                <h1 className="font-sf-pro text-gray-800 text-lg sm:text-xl md:text-2xl m-0 text-white">
+                <h1 className="font-sf-pro text-lg sm:text-xl md:text-2xl m-0 text-white">
                     <AnimatedText text="Hello, Dana!" />
                 </h1>
                 <p className="font-sf-pro text-2xl sm:text-3xl md:text-4xl font-regular mt-1 mb-0 text-white">
@@ -36,5 +36,3 @@ const Header: React.FC = () => {
         </motion.header>
     );
 };
-
-export default Header;

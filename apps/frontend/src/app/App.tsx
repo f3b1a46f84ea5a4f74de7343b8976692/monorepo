@@ -1,8 +1,8 @@
 import React from 'react';
-import TravelPage from '../pages/MarketPage/TravelPage';
+import TravelPage from '../pages/App/TravelPage/TravelPage';
 
 const App: React.FC = () => {
-  return <TravelPage />;
+    return <TravelPage />;
 };
 
 export default App;
