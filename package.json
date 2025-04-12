@@ -8,6 +8,7 @@
     "@aws-sdk/client-s3": "^3.731.0",
     "@aws-sdk/lib-storage": "^3.731.0",
     "@aws-sdk/types": "^3.731.0",
+    "@heroui/react": "^2.7.6",
     "@nestjs/axios": "^3.1.3",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^4.0.2",
@@ -18,10 +19,13 @@
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/sequelize": "^11.0.0",
     "@nextui-org/react": "^2.6.10",
+    "@phosphor-icons/react": "^2.1.7",
     "@prisma/client": "5.19.0",
+    "@react-aria/i18n": "^3.12.7",
     "@reduxjs/toolkit": "^2.5.0",
     "@types/http-proxy-middleware": "^1.0.0",
     "@types/react-beautiful-dnd": "^13.1.8",
+    "@types/styled-components": "^5.1.34",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
@@ -50,7 +54,8 @@
     "react-toastify": "^11.0.2",
     "redux-persist": "^6.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.0",
+    "styled-components": "^6.1.17"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
