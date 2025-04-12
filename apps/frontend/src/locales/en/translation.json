@@ -1,0 +1,92 @@
+{
+  "hero": {
+    "lines": [
+      "Immerse",
+      "yourself",
+      "in the wonders",
+      "of Krasnodar",
+      "region."
+    ],
+    "subtitle": "Mountain Magic, Sea Charm",
+    "description": "Your journey begins here – explore sunny beaches, snowy peaks, and unforgettable adventures in Russia's premier destination"
+  },
+"scrollDown": "scrollDown",
+  "navbar": {
+    "invest": "Invest in the Region",
+    "menu": {
+      "home": "Home",
+      "about": "About Region",
+      "recreations": "Recreations",
+      "partners": "Partners"
+    },
+    "lang": "En",
+    "signUp": "Sign Up"
+  },
+  "about": {
+    "title": "About resorts",
+    "description": "From Black Sea beaches to mountain health retreats, Krasnodar region offers a year-round escape for every traveler. Rejuvenate in mineral spas, hike coastal cliffs, or ski the slopes of the Caucasus – all within a single destination.",
+    "stats1": {
+        "text": "Million Tourist Visits Annually"
+    },
+    "stats2":  {
+        "text": "Climatic Zones In One Region"
+    },
+    "stats3":  {
+        "text": "km, Black Sea coastline"
+    }
+  },
+  "coast": {
+    "title": "Coast & Mountains",
+    "heading": "Are you ready to explore the only place in Russia where beaches meet mountains?",
+    "description": "Leave the city noise behind and discovera land where Black Sea breezes meet alpine peaks. Krasnodar region offers  year-round getaways, from wellnessspas to ski resorts – all infused with local soul and sunshine",
+    "kuban": {
+      "title": "Kuban Journey",
+      "subtitle": "Curated by locals, loved by travelers"
+    },
+    "button": "Explore now"
+  },
+  "gallery": {
+    "title": "Gallery & Overview",
+    "heading": "Soul-stirring escape",
+    "button": "View more"
+  },
+  "brands": {
+    "description1": "United by place. Connected by purpose. A shared journey shaped by a thousand hands.",
+    "description2": "Building the future of travel together. Trusted by leaders in tourism, hospitality, and innovation.",
+    "button": "Become a Partner"
+  },
+  "stories": {
+    "title": "Season Travel Stories",
+    "heading": "Choose your seasonal journey",
+    "button1": "Bloom Season",
+    "button2": "Golden Escape",
+    "button3": "Snow Silence",
+    "button4": "Urban Exploration",
+    "button5": "Food & Wine",
+    "button6": "Wellness & Nature",
+    "button7": "Hike & Rise",
+    "button8": "Soul of Kuban",
+    "button9": "Time Travel",
+    "button10": "Coastal Retreats",
+    "slide": {
+      "description": "Peach & cherry bloom in Gulkivichi gardens",
+      "likes": "7.4k"
+    }
+  },
+  "common": {
+    "scroll": "Scroll down",
+    "close": "Close",
+    "view": "View",
+    "explore": "Explore",
+    "back": "Back to Top",
+    "partner": "Partner"
+  },
+  "footer": {
+    "link1": "Home",
+    "link2": "About Resorts",
+    "link3": "Coast & Mountains",
+    "link4": "Galery",
+    "link5": "Partnets",
+    "link6": "Journeys"
+  }
+}

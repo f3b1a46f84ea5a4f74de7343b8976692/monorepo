@@ -4,7 +4,8 @@ import { HeroUIProvider } from '@heroui/react';
 import { RouterProvider } from './providers/RouterProvider';
 import '@local/shared/fonts';
 import '@local/shared/styles/animations.css';
-
+import { ParallaxProvider } from 'react-scroll-parallax';
+import '../i18n';
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <StrictMode>
         <HeroUIProvider>
-            <RouterProvider />
+            <ParallaxProvider>
+                <RouterProvider />
+            </ParallaxProvider>
         </HeroUIProvider>
     </StrictMode>
 );
