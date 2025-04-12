@@ -2,6 +2,8 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { HeroUIProvider } from '@heroui/react';
 import { RouterProvider } from './providers/RouterProvider';
+import '@local/shared/fonts';
+import '@local/shared/styles/animations.css';
 import { ParallaxProvider } from 'react-scroll-parallax';
 import '../i18n';
 const root = ReactDOM.createRoot(
@@ -17,3 +19,4 @@ root.render(
         </HeroUIProvider>
     </StrictMode>
 );
+

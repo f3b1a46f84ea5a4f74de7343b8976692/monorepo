@@ -1,5 +1,8 @@
-import { Button } from '@heroui/react';
+import React from 'react';
+import TravelPage from '../pages/MarketPage/TravelPage';
 
-export const App = () => {
-    return <Button>123</Button>;
+const App: React.FC = () => {
+  return <TravelPage />;
 };
+
+export default App;

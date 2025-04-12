@@ -2,3 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .border-gradient-silver::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+        border-radius: 9999px;
+        z-index: -1;
+        padding: 1px;
+        background: linear-gradient(
+                175deg,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 255, 255, 0) 40%,
+                rgba(255, 255, 255, 0) 60%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+        
+        -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+    }
+    .activeTabStyle {
+        color: black;
+    }
+    
+    .inactiveTabStyle {
+        color: rgba(255, 255, 255, 0.6);
+    }
+}
+
