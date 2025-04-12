@@ -19,4 +19,3 @@ root.render(
         </HeroUIProvider>
     </StrictMode>
 );
-

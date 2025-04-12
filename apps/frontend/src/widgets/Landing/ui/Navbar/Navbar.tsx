@@ -137,7 +137,7 @@ export const Navbar = () => {
                                 </motion.div>
                             }
                             as={Link}
-                            className="bg-white"
+                            className="bg-white rounded-3xl"
                             href="#"
                             variant="flat"
                         >

@@ -26,7 +26,7 @@ export const ScrollDown = ({ className, ...props }: IScrollDownProps) => {
             onClick={scrollToNextSection} // Переход к следующему блоку при клике
         >
             <div className="flex items-center gap-4 self-center">
-                {t('scrollDown', 'Scroll down')}
+                {t('common.scroll', 'Scroll down')}
                 <motion.div
                     animate={{ y: [0, 3, 0] }}
                     transition={{
