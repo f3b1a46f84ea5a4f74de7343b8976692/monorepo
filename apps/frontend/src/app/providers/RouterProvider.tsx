@@ -3,12 +3,15 @@ import {
     createBrowserRouter,
     RouterProvider as ReactRouter,
 } from 'react-router-dom';
-import { LandingPage } from '../../pages/LandingPage';
-import TravelPage from '../../pages/App/TravelPage/TravelPage';
 import { Wrapper } from '@local/shared/ui/Wrapper/Wrapper';
-import OffersPage from '@local/pages/App/OffersPage.tsx/OffersPage';
-import MyTripsPage from '@local/pages/App/MyTipsPage.tsx/MyTripsPage';
-import { MatchesPage } from '@local/pages/App/MatchesPage/MatchesPage';
+import {
+    MapPage,
+    MatchesPage,
+    MyTripsPage,
+    OffersPage,
+    TravelPage,
+} from '@local/pages/App';
+import { LandingPage } from '@local/pages';
 
 const router = createBrowserRouter([
     {
@@ -36,6 +39,10 @@ const router = createBrowserRouter([
     {
         path: '/matches',
         element: <MatchesPage />,
+    },
+    {
+        path: '/map',
+        element: <MapPage />,
     },
 ]);
 

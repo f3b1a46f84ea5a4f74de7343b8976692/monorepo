@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import '@local/shared/styles/scrollbar.css';
 
-const MyTripsPage: React.FC = () => {
+export const MyTripsPage: React.FC = () => {
     return (
         <div className="w-full mx-auto min-h-screen bg-gradient-to-b from-[#47698b] via-[#a1afc0] to-[#bdd1d6] overflow-x-hidden relative transition-opacity duration-500">
             <div className="pb-28">
@@ -23,5 +23,3 @@ const MyTripsPage: React.FC = () => {
         </div>
     );
 };
-
-export default MyTripsPage;

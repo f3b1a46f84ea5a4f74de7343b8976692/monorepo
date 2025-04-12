@@ -19,6 +19,7 @@
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/sequelize": "^11.0.0",
     "@nextui-org/react": "^2.6.10",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@phosphor-icons/react": "^2.1.7",
     "@prisma/client": "5.19.0",
     "@react-aria/i18n": "^3.12.7",

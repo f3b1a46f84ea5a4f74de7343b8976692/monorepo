@@ -4,21 +4,43 @@ import { CiHeart, CiMap } from 'react-icons/ci';
 import { Button } from '@heroui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useGeoRedirect } from '@local/shared/lib';
+import { BackButton } from '@local/shared/ui/BackButton';
 
 // Define types for card data
 interface CardData {
     id: number;
     name: string;
     imageUrl: string;
+    lat: number;
+    lon: number;
 }
 
 export const MatchesPage: React.FC = () => {
-    const swipeRef = useRef<React.RefObject<any>>(null);
-    // Example data for swiping cards
+    const { handleRedirect } = useGeoRedirect();
     const data: CardData[] = [
-        { id: 1, name: 'Destination 1', imageUrl: '/example.jpg' },
-        { id: 2, name: 'Destination 2', imageUrl: '/example.jpg' },
-        { id: 3, name: 'Destination 3', imageUrl: '/example.jpg' },
+        {
+            id: 1,
+            name: 'Destination 1',
+            imageUrl: '/example.jpg',
+            lat: 45.039451,
+            lon: 38.974496,
+        },
+        {
+            id: 2,
+            name: 'Destination 2',
+            imageUrl: '/example.jpg',
+            lat: 45.039451,
+            lon: 38.974496,
+        },
+        {
+            id: 3,
+            name: 'Destination 3',
+            imageUrl: '/example.jpg',
+            lat: 45.039451,
+            lon: 38.974496,
+        },
     ];
 
     const [currentIndex, setCurrentIndex] = useState<number>(data.length - 1);
@@ -94,18 +116,27 @@ export const MatchesPage: React.FC = () => {
                         </div>
                     </TinderCard>
                 ))}
+                <motion.h3
+                    initial={{ y: -20 }}
+                    transition={{ duration: 1 }}
+                    whileInView={{ y: 0 }}
+                    className="mt-20 text-xl text-medium"
+                >
+                    Matches Done!
+                </motion.h3>
             </div>
-            <Button
-                isIconOnly
-                startContent={<FaArrowLeft />}
-                className="fixed top-2  left-2 backdrop-blur-lg z-1000 rounded-full text-white text-lg"
-                as={Link}
-                to={'/travel'}
-            />
-
+            <BackButton />
             {/* Buttons for swiping */}
             <div className="fixed bottom-4 left-0 right-0 flex justify-center gap-4">
-                <div className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg  text-lg flex flex-col gap-4 items-center">
+                <div
+                    onClick={() =>
+                        handleRedirect(
+                            data[currentIndex].lat,
+                            data[currentIndex].lon
+                        )
+                    }
+                    className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg  text-lg flex flex-col gap-4 items-center"
+                >
                     <CiMap className="text-3xl" />
                     Routes
                 </div>

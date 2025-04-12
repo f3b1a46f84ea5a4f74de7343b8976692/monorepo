@@ -19,7 +19,7 @@ interface TravelCardData {
     category: string;
 }
 
-const TravelPage: React.FC = () => {
+export const TravelPage: React.FC = () => {
     const categories = [
         '🏖️ Beach',
         '⛰️ Mountain',
@@ -233,5 +233,3 @@ const TravelPage: React.FC = () => {
         </div>
     );
 };
-
-export default TravelPage;

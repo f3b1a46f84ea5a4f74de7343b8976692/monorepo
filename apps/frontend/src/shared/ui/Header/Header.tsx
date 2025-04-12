@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import AvatarSvg from '@local/shared/images/Avatar.svg';
+import AvatarSvg from '@local/assets/icons/Avatar.svg';
 import AnimatedText from '@local/pages/MarketPage/components/AnimatedText';
 
 export const Header: React.FC = () => {
