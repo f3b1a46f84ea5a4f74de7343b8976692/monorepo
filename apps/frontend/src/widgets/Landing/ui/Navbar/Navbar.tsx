@@ -4,11 +4,26 @@ import {
     NavbarItem,
     Link,
     Button,
+    ButtonGroup,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
 } from '@heroui/react';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
-import Logo from '@local/assets/icons/LandingLogo.svg';
+import Logo from '@local/assets/icons/light.svg';
+import { useTranslation } from 'react-i18next';
+
 export const Navbar = () => {
+    const { i18n, t } = useTranslation();
+
+    const changeLanguage = (lng: 'en' | 'ar') => {
+        i18n.changeLanguage(lng);
+    };
+
+    const currentLang = i18n.language === 'ar' ? 'Ar' : 'En';
+
     return (
         <Nav
             position="static"
@@ -18,23 +33,99 @@ export const Navbar = () => {
             <NavbarContent justify="start">
                 <NavbarItem className="relative">
                     <motion.div
-                        className="absolute"
-                        initial={{ top: -100, left: -40 }}
-                        animate={{ top: -10, left: -40 }}
+                        initial={{ y: -100 }}
+                        animate={{ y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <Logo />
+                        <Button
+                            startContent={<Logo />}
+                            variant="light"
+                            size="lg"
+                            className="rounded-full text-white bg-[#f0f0f033] backdrop-blur-2xl"
+                        >
+                            {t('navbar.invest')}
+                        </Button>
                     </motion.div>
                 </NavbarItem>
             </NavbarContent>
+
+            <NavbarContent justify="center">
+                <NavbarItem className="relative">
+                    <motion.div
+                        initial={{ y: -100 }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <ButtonGroup className="rounded-[100px]">
+                            <Button
+                                variant="light"
+                                size="lg"
+                                className="text-white bg-[#f0f0f01a] backdrop-blur-sm"
+                            >
+                                {t('navbar.menu.home')}
+                            </Button>
+                            <Button
+                                variant="light"
+                                size="lg"
+                                className="text-white bg-[#f0f0f01a] backdrop-blur-sm"
+                            >
+                                {t('navbar.menu.about')}
+                            </Button>
+                            <Button
+                                variant="light"
+                                size="lg"
+                                className="text-white bg-[#f0f0f01a] backdrop-blur-sm"
+                            >
+                                {t('navbar.menu.recreations')}
+                            </Button>
+                            <Button
+                                variant="light"
+                                size="lg"
+                                className="text-white bg-[#f0f0f01a] backdrop-blur-sm"
+                            >
+                                {t('navbar.menu.partners')}
+                            </Button>
+                        </ButtonGroup>
+                    </motion.div>
+                </NavbarItem>
+            </NavbarContent>
+
             <NavbarContent justify="end">
                 <NavbarItem className="relative">
                     <motion.div
-                        className="absolute"
-                        initial={{ top: -100, right: 0 }}
-                        animate={{ top: -10 }}
+                        initial={{ y: -100 }}
+                        animate={{ y: -10 }}
                         transition={{ duration: 0.6 }}
+                        className="flex gap-4 items-center"
                     >
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <p
+                                    className="bg-[#f0f0f01a] cursor-pointer backdrop-blur-md text-white
+                                    rounded-[50%] p-2 px-3"
+                                >
+                                    {currentLang}
+                                </p>
+                            </DropdownTrigger>
+                            <DropdownMenu
+                                aria-label="Language switcher"
+                                variant="light"
+                            >
+                                <DropdownItem
+                                    onClick={() => changeLanguage('en')}
+                                    key="En"
+                                >
+                                    En
+                                </DropdownItem>
+                                <DropdownItem
+                                    onClick={() => changeLanguage('ar')}
+                                    key="Ar"
+                                >
+                                    Ar
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+
                         <Button
                             endContent={
                                 <motion.div
@@ -50,7 +141,7 @@ export const Navbar = () => {
                             href="#"
                             variant="flat"
                         >
-                            Sign Up
+                            {t('navbar.signUp')}
                         </Button>
                     </motion.div>
                 </NavbarItem>
