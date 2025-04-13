@@ -1,7 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
+import { CityModule } from './city/city.module';
+import { ConfigModule } from '@nestjs/config';
+import { PlaceModule } from './place/place.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-    imports: [AuthModule],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
+        HttpModule.register({
+            timeout: 5000,
+            maxRedirects: 5,
+        }),
+        CityModule,
+        PlaceModule,
+    ],
 })
 export class AppModule {}
