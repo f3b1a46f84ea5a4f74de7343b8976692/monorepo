@@ -1,7 +1,7 @@
-import { BadRequestException, Controller, Get } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CityService } from './city.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CityResponse } from './response/city.response';
+import { CityResponse } from '@aqua/shared-types';
 
 @ApiTags('City')
 @Controller('city')

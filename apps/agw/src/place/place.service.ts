@@ -1,3 +1,4 @@
+import { PlaceResponse } from '@aqua/shared-types';
 import { HttpService } from '@nestjs/axios';
 import {
     Injectable,
@@ -6,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { PlaceResponse } from './response/place.response';
 
 @Injectable()
 export class PlaceService implements OnModuleInit {
@@ -24,15 +24,16 @@ export class PlaceService implements OnModuleInit {
     }
 
     async getPlacesByCityName(name: string): Promise<PlaceResponse[]> {
+        const encodedName = encodeURIComponent(name);
         const response = await firstValueFrom(
-            this.httpService.get(`${this.url}/api/fetchPlaces?name=${name}`)
+            this.httpService.get(`${this.url}/fetchPlaces/?city=${encodedName}`)
         );
         return response.data;
     }
 
     async getPlaces(): Promise<PlaceResponse[]> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.url}/api/fetchPlaces`)
+            this.httpService.get(`${this.url}/fetchPlaces`)
         );
         return response.data;
     }

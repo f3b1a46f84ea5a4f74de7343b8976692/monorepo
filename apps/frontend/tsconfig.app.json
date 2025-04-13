@@ -10,6 +10,8 @@
             "vite/client"
         ],
         "paths": {
+            "@aqua/shared-types": ["libs/shared-types/src"],
+            "@aqua/shared-types/*": ["libs/shared-types/src/*"],
             // FSD
             "@local/app": ["apps/frontend/src/app"],
             "@local/app/*": ["apps/frontend/src/app/*"],

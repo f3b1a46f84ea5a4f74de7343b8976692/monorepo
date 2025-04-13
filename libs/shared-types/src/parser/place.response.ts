@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Schedule, Point } from '@aqua/shared-types';
+import { Point } from './point.response';
+import { Schedule } from './schedule.response';
 export class PlaceResponse {
     @ApiProperty({ type: Number })
     id: number;

@@ -3,18 +3,14 @@ import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import { BackButton } from '@local/shared/ui/BackButton';
 
 export const MapPage = () => {
-    const map = useRef<any | null>(null); // Ссылка на объект карты
+    const map = useRef<any | null>(null);
+
     const [dimensions, setDimensions] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
     });
 
-    // Извлечение координат из query параметров
-    const [userLocation, setUserLocation] = useState<{
-        lat: number;
-        lon: number;
-    } | null>(null);
-    const [pointLocation, setPointLocation] = useState<{
+    const [location, setLocation] = useState<{
         lat: number;
         lon: number;
     } | null>(null);
@@ -31,50 +27,22 @@ export const MapPage = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Извлечение координат из URL
+    // Получаем координаты из URL (lat, lon)
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
-        const userLat = parseFloat(queryParams.get('user.lat') || '0');
-        const userLon = parseFloat(queryParams.get('user.lon') || '0');
-        const pointLat = parseFloat(queryParams.get('point.lat') || '0');
-        const pointLon = parseFloat(queryParams.get('point.lon') || '0');
+        const lat = parseFloat(queryParams.get('lat') || '');
+        const lon = parseFloat(queryParams.get('lon') || '');
 
-        if (userLat && userLon) {
-            setUserLocation({ lat: userLat, lon: userLon });
-        }
-
-        if (pointLat && pointLon) {
-            setPointLocation({ lat: pointLat, lon: pointLon });
+        if (!isNaN(lat) && !isNaN(lon)) {
+            setLocation({ lat, lon });
         }
     }, []);
 
-    // Функция для добавления маршрута на карту
-    const addRoute = (ymaps: any) => {
-        if (userLocation && pointLocation) {
-            const multiRoute = new ymaps.multiRouter.MultiRoute(
-                {
-                    referencePoints: [
-                        [userLocation.lat, userLocation.lon], // Координаты пользователя
-                        [pointLocation.lat, pointLocation.lon], // Точка назначения
-                    ],
-                    params: {
-                        routingMode: 'pedestrian', // Режим пешеходного маршрута
-                    },
-                },
-                {
-                    boundsAutoApply: true,
-                }
-            );
-
-            map.current.geoObjects.add(multiRoute);
-        }
-    };
-
     const defaultState = {
-        center: userLocation
-            ? [userLocation.lat, userLocation.lon]
-            : [55.751574, 37.573856], // Центр карты
-        zoom: 9,
+        center: location
+            ? [location.lat, location.lon]
+            : [55.751574, 37.573856],
+        zoom: 14,
         controls: ['zoomControl'],
     };
 
@@ -85,25 +53,12 @@ export const MapPage = () => {
                 <Map
                     instanceRef={map}
                     defaultState={defaultState}
-                    modules={['multiRouter.MultiRoute', 'control.ZoomControl']}
+                    modules={['control.ZoomControl']}
                     width={`${dimensions.width}px`}
                     height={`${dimensions.height}px`}
-                    onLoad={addRoute} // Вызываем addRoute при загрузке карты
                 >
-                    {/* Маркер для пользователя */}
-                    {userLocation && (
-                        <Placemark
-                            geometry={[userLocation.lat, userLocation.lon]}
-                        />
-                    )}
-                    {/* Маркер для точки назначения */}
-                    {pointLocation && userLocation && (
-                        <Placemark
-                            geometry={[
-                                userLocation.lat + 1,
-                                userLocation.lon + 1,
-                            ]}
-                        />
+                    {location && (
+                        <Placemark geometry={[location.lat, location.lon]} />
                     )}
                 </Map>
             </YMaps>

@@ -6,7 +6,7 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { CityResponse } from './response/city.response';
+import { CityResponse } from '@aqua/shared-types';
 
 const cities = [
     {
