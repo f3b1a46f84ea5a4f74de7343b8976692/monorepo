@@ -3,10 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import '@local/shared/styles/scrollbar.css';
 
 import AnimatedText from '../../MarketPage/components/AnimatedText';
-import Header from '../../MarketPage/components/Header';
-import SearchFilterSection from '../../MarketPage/components/SearchFilterSection';
 import DestinationCard from '../../MarketPage/components/DestinationCard';
 import TravelDetailModal from '../../MarketPage/components/TravelDetailModal';
+import { SearchFilter } from '@local/entities/city';
 
 // --- TravelCardData Interface ---
 interface TravelCardData {
@@ -27,7 +26,6 @@ export const TravelPage: React.FC = () => {
         '🌲 Forest',
         '🏛️ Cultural',
     ];
-    const tabs = ['MY TRIPS', 'HOME', 'OFFERS'];
 
     const travelCards: TravelCardData[] = [
         {
@@ -144,14 +142,7 @@ export const TravelPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#A4D5DA] via-[#D9D8B5] to-[#276A7D] overflow-hidden pt-24 relative">
             <div className="h-full">
-                <SearchFilterSection
-                    categories={categories}
-                    activeCategory={activeCategory}
-                    onCategoryChange={handleCategoryChange}
-                    searchTerm={searchTerm}
-                    onSearchChange={handleSearchChange}
-                    isPageLoaded={isPageLoaded}
-                />
+                <SearchFilter />
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isPageLoaded ? 1 : 0 }}

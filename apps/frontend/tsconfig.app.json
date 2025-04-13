@@ -1,6 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
+        "typeRoots": ["./src/shared/types"],
         "outDir": "../../dist/out-tsc",
         "types": [
             "node",
