@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PlaceResponse } from '../../place/response/place.response';
+import { PlaceResponse } from './place.response';
 
 export class CityResponse {
     @ApiProperty({ type: String })

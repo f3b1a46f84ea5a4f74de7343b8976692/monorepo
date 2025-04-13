@@ -1,8 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { PlaceService } from './place.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PlaceResponse } from './response/place.response';
-
+import { PlaceResponse } from '@aqua/shared-types';
 @ApiTags('Places')
 @Controller('place')
 export class PlaceController {

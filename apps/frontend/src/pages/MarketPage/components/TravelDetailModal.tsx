@@ -1,19 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, CaretRight } from '@phosphor-icons/react';
-
-interface TravelCardData {
-    id: string;
-    image: string;
-    title: string;
-    price: string;
-    description: string;
-    options: string[];
-    category: string;
-}
+import { CityResponse } from '@aqua/shared-types';
+import { useLazyGetPlacesQuery } from '@local/entities/city';
+import { useNavigate } from 'react-router-dom';
 
 interface TravelDetailModalProps {
-    cardData: TravelCardData | null;
+    cardData: CityResponse;
     onClose: () => void;
 }
 
@@ -21,7 +14,20 @@ const TravelDetailModal: React.FC<TravelDetailModalProps> = ({
     cardData,
     onClose,
 }) => {
-    const cardRef = useRef<TravelCardData | null>(null);
+    const [trigger, { data: places }] = useLazyGetPlacesQuery();
+
+    const navigate = useNavigate();
+
+    const handlePlaceClick = ({ lat, lon }: { lat: number; lon: number }) => {
+        navigate(`/map?lat=${lat}&lon=${lon}`);
+    };
+
+    useEffect(() => {
+        if (cardData.title) {
+            trigger(cardData.title);
+        }
+    }, []);
+    const cardRef = useRef<CityResponse | null>(null);
 
     useEffect(() => {
         if (cardData) {
@@ -39,38 +45,9 @@ const TravelDetailModal: React.FC<TravelDetailModalProps> = ({
 
     const displayCard = cardData || cardRef.current;
 
-    const optionButtonColors: { [key: string]: string } = {
-        'City Tour': 'bg-[#6a8a9c]',
-        'Food Tasting': 'bg-[#58a0a8]',
-        'Museum Visits': 'bg-[#466b7b]',
-        'Beach Relaxation': 'bg-[#78b0b6]',
-        'Yoga Retreat': 'bg-[#5ba89e]',
-        'Temple Visits': 'bg-[#4c8890]',
-        'Historical Tours': 'bg-[#6a8a9c]',
-        'Wine Tasting': 'bg-[#88a0b0]',
-        'Coastal Drives': 'bg-[#58a0a8]',
-        'Hiking': 'bg-[#5f938b]',
-        'Skiing': 'bg-[#7ab0c0]',
-        'Scenic Train Rides': 'bg-[#6a8a9c]',
-        'Wildlife Tour': 'bg-[#8a9c7c]',
-        'River Cruise': 'bg-[#58a0a8]',
-        'Jungle Trekking': 'bg-[#5f938b]',
-        'Cultural Getaway': 'bg-[#6a8a9c]',
-        'Modern City Escape': 'bg-[#58a0a8]',
-        'Family Adventure': 'bg-[#466b7b]',
-        'Default': 'bg-[#6a8a9c]',
-    };
-
-    const getBorderRadiusClass = (index: number, total: number): string => {
-        if (total === 1) return 'rounded-xl';
-        if (index === 0) return 'rounded-t-xl';
-        if (index === total - 1) return 'rounded-b-xl';
-        return '';
-    };
-
     return (
         <AnimatePresence>
-            {cardData && displayCard && (
+            {places && displayCard && (
                 <motion.div
                     key={displayCard.id}
                     className="fixed inset-0 z-[60] flex flex-col bg-[#e4eff0]"
@@ -110,41 +87,24 @@ const TravelDetailModal: React.FC<TravelDetailModalProps> = ({
                                 alt={displayCard.title}
                                 className="relative z-10 w-full h-full object-cover"
                             />
-                            <div className="relative z-20 -mt-16 sm:-mt-20 md:-mt-24 mx-4 mb-4">
-                                <div className="bg-black/60 backdrop-blur-md rounded-xl p-3 shadow-lg">
-                                    <p className="text-white/95 text-sm sm:text-[0.9rem] leading-relaxed">
-                                        {displayCard.description}
-                                    </p>
-                                </div>
-                            </div>
                         </div>
 
                         <div className="p-4 sm:p-5 pb-6">
-                            <h3 className="text-base font-medium text-gray-600 mb-3 mt-0">
-                                Travel Options
-                            </h3>
-                            <div className="relative shadow-lg rounded-xl">
-                                {displayCard.options.map((optionText, index) => {
-                                    const totalOptions = displayCard.options.length;
-                                    const zIndex = index;
-                                    const borderRadiusClass = getBorderRadiusClass(index, totalOptions);
-
+                            <div className="relative shadow-lg flex flex-col gap-4 items-start rounded-xl">
+                                {places.map((item) => {
                                     return (
                                         <button
-                                            key={optionText}
-                                            className={`
-                                                relative w-full flex justify-between items-center text-left text-white font-medium p-4
-                                                transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.99] active:brightness-95
-                                                ${optionButtonColors[optionText] || optionButtonColors['Default']}
-                                                ${borderRadiusClass}
-                                                ${index > 0 ? 'mt-[-10px]' : ''}
-                                                border border-black/10
-                                            `}
-                                            style={{ zIndex: zIndex }}
+                                            onClick={() =>
+                                                handlePlaceClick({
+                                                    lat: item.point.lat,
+                                                    lon: item.point.lon,
+                                                })
+                                            }
+                                            key={item.id}
+                                            className="px-4 py-3 border  w-full backdrop-blur-md shadow-sm shadow-zinc-300 rounded-lg"
                                         >
-                                            <span className="text-base sm:text-lg">{optionText}</span>
-                                            <span className="bg-white/20 backdrop-blur-sm rounded-full w-7 h-7 flex items-center justify-center transition-colors">
-                                                <CaretRight size={16} weight="bold" className="text-white/90" />
+                                            <span className="text-base sm:text-lg">
+                                                {item.name}
                                             </span>
                                         </button>
                                     );
@@ -156,7 +116,6 @@ const TravelDetailModal: React.FC<TravelDetailModalProps> = ({
                                 )}
                             </div>
                         </div>
-                        <div className="h-4"></div>
                     </div>
                 </motion.div>
             )}
@@ -164,4 +123,4 @@ const TravelDetailModal: React.FC<TravelDetailModalProps> = ({
     );
 };
 
-export default TravelDetailModal; 
+export default TravelDetailModal;

@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { classNames } from '@local/shared/lib';
+import React, {
+    DetailedHTMLProps,
+    HTMLAttributes,
+    useEffect,
+    useState,
+} from 'react';
 
-interface AnimatedTextProps {
+interface AnimatedTextProps
+    extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     text: string;
     delay?: number;
     style?: React.CSSProperties;
     className?: string;
 }
 
-const AnimatedText: React.FC<AnimatedTextProps> = ({ text, delay = 0, style, className }) => {
+const AnimatedText: React.FC<AnimatedTextProps> = ({
+    text,
+    delay = 0,
+    style,
+    className,
+}) => {
     const [isAnimating, setIsAnimating] = useState(true);
     const [renderedText, setRenderedText] = useState('');
 
@@ -27,7 +38,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({ text, delay = 0, style, cla
 
     return (
         <span
-            className={`text-animation-container ${className || ''}`}
+            className={classNames('text-animation-container', {}, [className])}
             style={style}
         >
             {isAnimating ? (
@@ -36,8 +47,8 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({ text, delay = 0, style, cla
                         <span
                             key={index}
                             style={{
-                                animationDelay: `${(index * 30 + delay)}ms`,
-                                whiteSpace: char === ' ' ? 'pre' : 'normal'
+                                animationDelay: `${index * 30 + delay}ms`,
+                                whiteSpace: char === ' ' ? 'pre' : 'normal',
                             }}
                         >
                             {char}
@@ -45,10 +56,10 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({ text, delay = 0, style, cla
                     ))}
                 </span>
             ) : (
-                <span className="static-text">{renderedText}</span>
+                <span className="static-text text-wrap">{renderedText}</span>
             )}
         </span>
     );
 };
 
-export default AnimatedText; 
+export default AnimatedText;
