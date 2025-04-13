@@ -18,7 +18,7 @@ export class PlaceController {
         status: 500,
         description: 'Internal server error',
     })
-    async getAll(): Promise<PlaceResponse[]> {
+    async getAll() {
         return this.service.getPlaces();
     }
 

@@ -1,42 +1,42 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import { CiHeart, CiMap } from 'react-icons/ci';
+import { Button } from '@heroui/react';
+import { FaArrowLeft } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGeoRedirect } from '@local/shared/lib';
 import { BackButton } from '@local/shared/ui/BackButton';
 import { useGetAllPlacesQuery } from '@local/entities/city';
-import type { PlaceResponse } from '@aqua/shared-types';
 
-interface CardData {
+// Define types for card data
+export interface CardData {
     id: number;
     name: string;
     imageUrl: string;
+    description: string;
     lat: number;
     lon: number;
 }
 
 export const MatchesPage: React.FC = () => {
-    const { data = [] } = useGetAllPlacesQuery(null);
     const { handleRedirect } = useGeoRedirect();
 
-    const transformedData: CardData[] = useMemo(() => {
-        return data.map((place: PlaceResponse) => ({
-            id: place.id,
-            name: place.name,
-            imageUrl: place.imageUrl,
-            lat: place.point.lat,
-            lon: place.point.lon,
-        }));
-    }, [data]);
+    // Получаем данные с помощью RTK Query
+    const { data, isLoading, isError } = useGetAllPlacesQuery(null);
 
     const [currentIndex, setCurrentIndex] = useState<number>(
-        transformedData.length - 1
+        data ? data.length - 1 : 0
     );
-    const currentIndexRef = useRef(currentIndex);
+    const [lastDirection, setLastDirection] = useState<string | undefined>(
+        undefined
+    );
 
-    const childRefs = useMemo(
-        () => transformedData.map(() => React.createRef<any>()),
-        [transformedData]
+    const currentIndexRef = useRef<number>(currentIndex);
+
+    const childRefs = useMemo<React.RefObject<any>[]>(
+        () => (data ? data.map(() => React.createRef<any>()) : []),
+        [data]
     );
 
     const updateCurrentIndex = (val: number) => {
@@ -44,21 +44,26 @@ export const MatchesPage: React.FC = () => {
         currentIndexRef.current = val;
     };
 
-    const canGoBack = currentIndex < transformedData.length - 1;
+    const canGoBack = currentIndex < (data ? data.length - 1 : 0);
     const canSwipe = currentIndex >= 0;
 
-    const swiped = (direction: string, _: string, index: number) => {
+    const swiped = (direction: string, nameToDelete: string, index: number) => {
+        setLastDirection(direction);
         updateCurrentIndex(index - 1);
     };
 
-    const outOfFrame = (_: string, idx: number) => {
+    const outOfFrame = (name: string, idx: number) => {
+        console.log(
+            `${name} (${idx}) left the screen!`,
+            currentIndexRef.current
+        );
         if (currentIndexRef.current >= idx) {
             childRefs[idx].current?.restoreCard();
         }
     };
 
     const swipe = async (dir: 'left' | 'right') => {
-        if (canSwipe) {
+        if (canSwipe && currentIndex >= 0) {
             await childRefs[currentIndex].current?.swipe(dir);
         }
     };
@@ -70,12 +75,20 @@ export const MatchesPage: React.FC = () => {
         await childRefs[newIndex].current?.restoreCard();
     };
 
-    const currentPlace = transformedData[currentIndex];
+    // Обработка состояний загрузки и ошибки
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return <div>Error loading places</div>;
+    }
 
     return (
-        <div className="w-full pt-24 mx-auto min-h-screen max-h-screen overflow-y-hidden bg-gradient-to-b from-[#47698b] via-[#a1afc0] to-[#bdd1d6] relative transition-opacity duration-500">
+        <div className="w-full pt-24 mx-auto min-h-screen max-h-screen overflow-y-hidden bg-gradient-to-b from-[#47698b] via-[#a1afc0] to-[#bdd1d6] overflow-x-hidden relative transition-opacity duration-500">
+            {/* Tinder Card container */}
             <div className="flex justify-center items-center">
-                {transformedData.map((item, index) => (
+                {data?.map((item, index) => (
                     <TinderCard
                         ref={childRefs[index]}
                         className="absolute top-0"
@@ -89,45 +102,41 @@ export const MatchesPage: React.FC = () => {
                                 alt={item.name}
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute bottom-40 left-0 right-0 text-white text-center py-2">
-                                <span>{item.name}</span>
+                            <div className="absolute bottom-40 flex flex-col gap-3 left-6 right-0 text-white text-left py-2">
+                                <span className="text-md font-unbounded font-medium">
+                                    {item.description}
+                                </span>
+                                <span className="text-5xl font-unbounded font-medium">
+                                    {item.name}
+                                </span>
                             </div>
                         </div>
                     </TinderCard>
                 ))}
-                <motion.h3
-                    initial={{ y: -20 }}
-                    transition={{ duration: 1 }}
-                    whileInView={{ y: 0 }}
-                    className="mt-20 text-xl text-medium"
-                >
-                    Matches Done!
-                </motion.h3>
             </div>
-
             <BackButton />
-
-            {/* Кнопки снизу */}
-            {currentPlace && (
-                <div className="fixed bottom-4 left-0 right-0 flex justify-center gap-4">
-                    <div
-                        onClick={() =>
-                            handleRedirect(currentPlace.lat, currentPlace.lon)
-                        }
-                        className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg text-lg flex flex-col gap-4 items-center"
-                    >
-                        <CiMap className="text-3xl" />
-                        Routes
-                    </div>
-                    <div
-                        onClick={() => swipe('right')}
-                        className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg text-lg flex flex-col gap-4 items-center"
-                    >
-                        <CiHeart className="text-3xl" />
-                        Like
-                    </div>
+            {/* Buttons for swiping */}
+            <div className="fixed bottom-4 left-0 right-0 flex justify-center gap-2">
+                <div
+                    onClick={() =>
+                        handleRedirect(
+                            data[currentIndex].lat,
+                            data[currentIndex].lon
+                        )
+                    }
+                    className="rounded-full font-medium text-white shadow-xl py-5 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg  text-lg flex flex-col gap-1 items-center"
+                >
+                    <CiMap className="text-3xl" />
+                    Routes
                 </div>
-            )}
+                <div
+                    onClick={() => swipe('right')}
+                    className="rounded-full font-medium text-white shadow-xl py-5 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg  text-lg flex flex-col gap-1 items-center"
+                >
+                    <CiHeart className="text-3xl" />
+                    Like
+                </div>
+            </div>
         </div>
     );
 };
