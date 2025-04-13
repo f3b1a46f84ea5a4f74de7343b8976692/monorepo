@@ -1,5 +1,7 @@
+import { CardData } from '@local/pages';
 import mainApi from '@local/shared/api/mainApi';
-import { CityResponse, PlaceResponse } from '@aqua/shared-types';
+import { CityResponse } from '@local/shared/types/city.response';
+import { PlaceResponse } from '@local/shared/types/place.response';
 export const cityApi = mainApi.injectEndpoints({
     endpoints: (build) => ({
         getCities: build.query<CityResponse[], null>({
@@ -12,7 +14,7 @@ export const cityApi = mainApi.injectEndpoints({
                 url: `/place/city?city=${title}`,
             }),
         }),
-        getAllPlaces: build.query<PlaceResponse[], null>({
+        getAllPlaces: build.query<CardData[], null>({
             query: () => ({
                 url: `/place/all`,
             }),
