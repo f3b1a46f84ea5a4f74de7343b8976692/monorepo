@@ -12,6 +12,15 @@ export const cityApi = mainApi.injectEndpoints({
                 url: `/place/city?city=${title}`,
             }),
         }),
+        getAllPlaces: build.query<PlaceResponse[], null>({
+            query: () => ({
+                url: `/place/all`,
+            }),
+        }),
     }),
 });
-export const { useGetCitiesQuery, useLazyGetPlacesQuery } = cityApi;
+export const {
+    useGetCitiesQuery,
+    useLazyGetPlacesQuery,
+    useGetAllPlacesQuery,
+} = cityApi;

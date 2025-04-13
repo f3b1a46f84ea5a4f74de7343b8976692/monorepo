@@ -33,7 +33,7 @@ export class PlaceService implements OnModuleInit {
 
     async getPlaces(): Promise<PlaceResponse[]> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.url}/fetchPlaces`)
+            this.httpService.get(`${this.url}/getAllPlaces`)
         );
         return response.data;
     }
