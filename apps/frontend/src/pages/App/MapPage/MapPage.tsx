@@ -49,6 +49,8 @@ export const MapPage = () => {
     return (
         <div className="relative">
             <BackButton />
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-expect-error */}
             <YMaps query={{ apikey: import.meta.env.VITE_YANDEX_MAP_API }}>
                 <Map
                     instanceRef={map}

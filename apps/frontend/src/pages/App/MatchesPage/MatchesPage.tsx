@@ -1,14 +1,12 @@
 import React, { useMemo, useRef, useState } from 'react';
 import TinderCard from 'react-tinder-card';
 import { CiHeart, CiMap } from 'react-icons/ci';
-import { Button } from '@heroui/react';
-import { FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGeoRedirect } from '@local/shared/lib';
 import { BackButton } from '@local/shared/ui/BackButton';
+import { useGetAllPlacesQuery } from '@local/entities/city';
+import type { PlaceResponse } from '@aqua/shared-types';
 
-// Define types for card data
 interface CardData {
     id: number;
     name: string;
@@ -18,42 +16,27 @@ interface CardData {
 }
 
 export const MatchesPage: React.FC = () => {
+    const { data = [] } = useGetAllPlacesQuery(null);
     const { handleRedirect } = useGeoRedirect();
-    const data: CardData[] = [
-        {
-            id: 1,
-            name: 'Destination 1',
-            imageUrl: '/example.jpg',
-            lat: 45.039451,
-            lon: 38.974496,
-        },
-        {
-            id: 2,
-            name: 'Destination 2',
-            imageUrl: '/example.jpg',
-            lat: 45.039451,
-            lon: 38.974496,
-        },
-        {
-            id: 3,
-            name: 'Destination 3',
-            imageUrl: '/example.jpg',
-            lat: 45.039451,
-            lon: 38.974496,
-        },
-    ];
 
-    const [currentIndex, setCurrentIndex] = useState<number>(data.length - 1);
-    const [lastDirection, setLastDirection] = useState<string | undefined>(
-        undefined
+    const transformedData: CardData[] = useMemo(() => {
+        return data.map((place: PlaceResponse) => ({
+            id: place.id,
+            name: place.name,
+            imageUrl: place.imageUrl,
+            lat: place.point.lat,
+            lon: place.point.lon,
+        }));
+    }, [data]);
+
+    const [currentIndex, setCurrentIndex] = useState<number>(
+        transformedData.length - 1
     );
+    const currentIndexRef = useRef(currentIndex);
 
-    // used for outOfFrame closure
-    const currentIndexRef = useRef<number>(currentIndex);
-
-    const childRefs = useMemo<React.RefObject<any>[]>(
-        () => data.map(() => React.createRef<any>()),
-        [data]
+    const childRefs = useMemo(
+        () => transformedData.map(() => React.createRef<any>()),
+        [transformedData]
     );
 
     const updateCurrentIndex = (val: number) => {
@@ -61,27 +44,22 @@ export const MatchesPage: React.FC = () => {
         currentIndexRef.current = val;
     };
 
-    const canGoBack = currentIndex < data.length - 1;
+    const canGoBack = currentIndex < transformedData.length - 1;
     const canSwipe = currentIndex >= 0;
 
-    const swiped = (direction: string, nameToDelete: string, index: number) => {
-        setLastDirection(direction);
+    const swiped = (direction: string, _: string, index: number) => {
         updateCurrentIndex(index - 1);
     };
 
-    const outOfFrame = (name: string, idx: number) => {
-        console.log(
-            `${name} (${idx}) left the screen!`,
-            currentIndexRef.current
-        );
+    const outOfFrame = (_: string, idx: number) => {
         if (currentIndexRef.current >= idx) {
             childRefs[idx].current?.restoreCard();
         }
     };
 
     const swipe = async (dir: 'left' | 'right') => {
-        if (canSwipe && currentIndex >= 0) {
-            await childRefs[currentIndex].current?.swipe(dir); // Swipe the card!
+        if (canSwipe) {
+            await childRefs[currentIndex].current?.swipe(dir);
         }
     };
 
@@ -92,11 +70,12 @@ export const MatchesPage: React.FC = () => {
         await childRefs[newIndex].current?.restoreCard();
     };
 
+    const currentPlace = transformedData[currentIndex];
+
     return (
-        <div className="w-full pt-24 mx-auto min-h-screen max-h-screen overflow-y-hidden bg-gradient-to-b from-[#47698b] via-[#a1afc0] to-[#bdd1d6] overflow-x-hidden relative transition-opacity duration-500">
-            {/* Tinder Card container */}
+        <div className="w-full pt-24 mx-auto min-h-screen max-h-screen overflow-y-hidden bg-gradient-to-b from-[#47698b] via-[#a1afc0] to-[#bdd1d6] relative transition-opacity duration-500">
             <div className="flex justify-center items-center">
-                {data.map((item, index) => (
+                {transformedData.map((item, index) => (
                     <TinderCard
                         ref={childRefs[index]}
                         className="absolute top-0"
@@ -125,29 +104,30 @@ export const MatchesPage: React.FC = () => {
                     Matches Done!
                 </motion.h3>
             </div>
+
             <BackButton />
-            {/* Buttons for swiping */}
-            <div className="fixed bottom-4 left-0 right-0 flex justify-center gap-4">
-                <div
-                    onClick={() =>
-                        handleRedirect(
-                            data[currentIndex].lat,
-                            data[currentIndex].lon
-                        )
-                    }
-                    className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg  text-lg flex flex-col gap-4 items-center"
-                >
-                    <CiMap className="text-3xl" />
-                    Routes
+
+            {/* Кнопки снизу */}
+            {currentPlace && (
+                <div className="fixed bottom-4 left-0 right-0 flex justify-center gap-4">
+                    <div
+                        onClick={() =>
+                            handleRedirect(currentPlace.lat, currentPlace.lon)
+                        }
+                        className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg text-lg flex flex-col gap-4 items-center"
+                    >
+                        <CiMap className="text-3xl" />
+                        Routes
+                    </div>
+                    <div
+                        onClick={() => swipe('right')}
+                        className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg text-lg flex flex-col gap-4 items-center"
+                    >
+                        <CiHeart className="text-3xl" />
+                        Like
+                    </div>
                 </div>
-                <div
-                    onClick={() => swipe('right')}
-                    className="rounded-full font-medium text-white shadow-xl py-2 px-16 w-[45%] cursor-pointer hover:backdrop-blur-xl backdrop-blur-lg  text-lg flex flex-col gap-4 items-center"
-                >
-                    <CiHeart className="text-3xl" />
-                    Like
-                </div>
-            </div>
+            )}
         </div>
     );
 };
