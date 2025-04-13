@@ -5,6 +5,7 @@ import '@local/shared/styles/scrollbar.css';
 import AnimatedText from '../../MarketPage/components/AnimatedText';
 import DestinationCard from '../../MarketPage/components/DestinationCard';
 import TravelDetailModal from '../../MarketPage/components/TravelDetailModal';
+import AIChatModal from '../../MarketPage/components/AIChatModal';
 import { SearchFilter } from '@local/entities/city';
 
 // --- TravelCardData Interface ---
@@ -91,6 +92,7 @@ export const TravelPage: React.FC = () => {
     );
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isAIChatOpen, setIsAIChatOpen] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => setIsPageLoaded(true), 100);
@@ -104,6 +106,8 @@ export const TravelPage: React.FC = () => {
     const handleCategoryChange = (category: string | null) =>
         setActiveCategory(category);
     const handleSearchChange = (term: string) => setSearchTerm(term);
+    const handleAIChatOpen = () => setIsAIChatOpen(true);
+    const handleAIChatClose = () => setIsAIChatOpen(false);
 
     const filteredTravelCards = useMemo(() => {
         let result = travelCards;
@@ -202,14 +206,17 @@ export const TravelPage: React.FC = () => {
                         y: isPageLoaded ? 0 : 20,
                     }}
                     transition={{ delay: 0.7 }}
-                    className=" text-white mx-4 mb-6"
+                    className="text-white mx-4 mb-6"
                 >
                     <div className="flex items-center gap-2">
                         <h3 className="font-sf-pro text-[1.7rem] sm:text-[2.8rem] md:text-[3rem] font-semibold m-0 mb-2 leading-[1.2]">
                             <i className="mr-2">Ask AI</i>
                             <p>For Travel Recommendations</p>
                         </h3>
-                        <button className="bg-[radial-gradient(circle,_rgba(255,255,255,0.1),_transparent)] border border-white rounded-full p-[10px] text-white text-[1.5rem] font-medium hover:bg-white/30 transition-colors flex items-center gap-2 aspect-square">
+                        <button 
+                            onClick={handleAIChatOpen}
+                            className="bg-[radial-gradient(circle,_rgba(255,0,0,0.4),_transparent)] border border-white rounded-full p-[10px] text-white text-[1.5rem] font-medium hover:bg-white/30 transition-colors flex items-center gap-2 aspect-square"
+                        >
                             <span role="img" aria-label="Chat bubble">
                                 💬
                             </span>
@@ -220,6 +227,10 @@ export const TravelPage: React.FC = () => {
             <TravelDetailModal
                 cardData={selectedCard}
                 onClose={handleCloseModal}
+            />
+            <AIChatModal
+                isOpen={isAIChatOpen}
+                onClose={handleAIChatClose}
             />
         </div>
     );
